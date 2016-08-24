@@ -2,7 +2,7 @@
 
 A simple script to grab all SHSH blobs from Apple that it's currently signing to save them locally and on Cydia server.
 
-And now also grabs blobs already cached on Cydia and iFaith servers to save them locally.
+And now also grabs blobs already cached on Cydia servers to save them locally.
 
 Will automatically work with future firmwares!
 
@@ -10,8 +10,8 @@ Will automatically work with future firmwares!
 
 	savethemblobs.py [-h] [--save-dir SAVE_DIR] [--overwrite]
 	                 [--overwrite-apple] [--overwrite-cydia]
-	                 [--overwrite-ifaith] [--no-submit-cydia]
-	                 [--skip-cydia] [--skip-ifaith]
+	                 [--no-submit-cydia]
+	                 [--skip-cydia] [--skip-cydia-beta]
 	                 ecid device
 
 	positional arguments:
@@ -24,10 +24,9 @@ Will automatically work with future firmwares!
 	  --overwrite          overwrite any existing blobs
 	  --overwrite-apple    overwrite any existing blobs (only from Apple)
 	  --overwrite-cydia    overwrite any existing blobs (only from Cydia)
-	  --overwrite-ifaith   overwrite any existing blobs (only from iFaith)
 	  --no-submit-cydia    don't submit blobs to Cydia server
 	  --skip-cydia         skip fetching blobs from Cydia server
-	  --skip-ifaith        skip fetching blobs from iFaith server
+	  --skip-cydia-beta    skip fetching beta blobs from Cydia server
 
 
 ## License
