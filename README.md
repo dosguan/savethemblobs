@@ -6,6 +6,15 @@ And now also grabs blobs already cached on Cydia servers to save them locally.
 
 Will automatically work with future firmwares!
 
+## Dependencies
+
+	Depends on Python 2.7
+	
+	On OS X, use Homebrew to set up:
+		brew install python
+		pip install --upgrade pip setuptools requests
+	
+
 ## Usage
 
 	savethemblobs.py [-h] [--save-dir SAVE_DIR] [--overwrite]
