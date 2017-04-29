@@ -108,7 +108,7 @@ def main(passedArgs = None):
 		cpid = device['cpid']
 		bdid = device['bdid']
 		for f in device['firmwares']:
-			save_path = os.path.join(args.save_dir, '%s_%s_%s-%s.shsh' % (ecid, model, f['version'], f['build']))
+			save_path = os.path.join(args.save_dir, '%s-%s-%s.shsh' % (ecid, model, f['version']))
 
 			if not os.path.exists(save_path) or args.overwrite_apple or args.overwrite:
 				print 'Requesting blobs from Apple for %s/%s' % (model, f['build'])
@@ -140,7 +140,7 @@ def main(passedArgs = None):
 			cpid = device['cpid']
 			bdid = device['bdid']
 			for b in device['firmwares']:
-				save_path = os.path.join(args.save_dir, '%s_%s_%s-%s.shsh' % (ecid, model, b['version'], b['build']))
+				save_path = os.path.join(args.save_dir, '%s-%s-%s.shsh' % (ecid, model, b['version']))
 
 				if not os.path.exists(save_path) or args.overwrite_cydia or args.overwrite:
 					print 'Requesting blobs from Cydia for %s/%s' % (model, b['build'])
