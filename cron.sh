@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 COMMAND="python savethemblobs.py"
-OPTIONS="--skip-cydia --skip-ifaith"
+OPTIONS=""
 
 pushd "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )" > /dev/null
 

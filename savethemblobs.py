@@ -17,7 +17,7 @@ import sys, os, argparse
 import requests
 import json
 
-__version__ = '2.0'
+__version__ = '2.1'
 
 USER_AGENT = 'savethemblobs/%s' % __version__
 
@@ -25,12 +25,12 @@ def firmwares_being_signed(device):
 	url = 'http://api.ineal.me/tss/%s/' % (device)
 	r = requests.get(url, headers={'User-Agent': USER_AGENT})
 	return r.text
-	
+
 def firmwares(device):
 	url = 'http://api.ineal.me/tss/%s/all' % (device)
 	r = requests.get(url, headers={'User-Agent': USER_AGENT})
 	return r.text
-	
+
 def beta_firmwares(device):
 	url = 'http://api.ineal.me/tss/beta/%s/all' % (device)
 	r = requests.get(url, headers={'User-Agent': USER_AGENT})
@@ -81,8 +81,7 @@ def parse_args():
 	parser.add_argument('--overwrite-apple', help='overwrite any existing blobs (only from Apple)', action='store_true')
 	parser.add_argument('--overwrite-cydia', help='overwrite any existing blobs (only from Cydia)', action='store_true')
 	parser.add_argument('--no-submit-cydia', help='don\'t submit blobs to Cydia server', action='store_true')
-	parser.add_argument('--skip-cydia', help='skip fetching blobs from Cydia server', action='store_true')
-	parser.add_argument('--skip-cydia-beta', help='skip fetching beta blobs from Cydia server', action='store_true')
+	parser.add_argument('--cydia-blobs', help='fetch blobs from Cydia server (32 bit devices only)', action='store_true')
 	return parser.parse_args()
 
 def main(passedArgs = None):
@@ -108,14 +107,14 @@ def main(passedArgs = None):
 		cpid = device['cpid']
 		bdid = device['bdid']
 		for f in device['firmwares']:
-			save_path = os.path.join(args.save_dir, '%s-%s-%s.shsh' % (ecid, model, f['version']))
+			save_path = os.path.join(args.save_dir, '%s-%s-%s-%s.shsh' % (ecid, model, f['version'], f['build']))
 
 			if not os.path.exists(save_path) or args.overwrite_apple or args.overwrite:
 				print 'Requesting blobs from Apple for %s/%s' % (model, f['build'])
 				r = request_blobs_from_apple(board, f['build'], ecid, cpid, bdid)
 
 				if r['MESSAGE'] == 'SUCCESS':
-					print 'Saving blobs to %s' % (save_path)
+					print 'Fresh blobs saved to %s' % (save_path)
 					write_to_file(save_path, r['REQUEST_STRING'])
 
 					if not args.no_submit_cydia:
@@ -126,9 +125,9 @@ def main(passedArgs = None):
 					print 'Error receiving blobs: %s [%s]' % (r['MESSAGE'], r['STATUS'])
 
 			else:
-				print 'Skipping build %s; blobs already exist at %s' % (f['build'], save_path)
+				print 'Blobs already exist at %s' % (save_path)
 
-	if not args.skip_cydia:
+	if args.cydia_blobs:
 		print 'Fetching blobs available on Cydia server'
 		g = firmwares(args.device)
 		if not g:
@@ -140,27 +139,23 @@ def main(passedArgs = None):
 			cpid = device['cpid']
 			bdid = device['bdid']
 			for b in device['firmwares']:
-				save_path = os.path.join(args.save_dir, '%s-%s-%s.shsh' % (ecid, model, b['version']))
+				save_path = os.path.join(args.save_dir, '%s-%s-%s-%s.shsh' % (ecid, model, b['version'], b['build']))
 
 				if not os.path.exists(save_path) or args.overwrite_cydia or args.overwrite:
-					print 'Requesting blobs from Cydia for %s/%s' % (model, b['build'])
+					#print 'Requesting blobs from Cydia for %s/%s' % (model, b['build'])
 					r = request_blobs_from_cydia(board, b['build'], ecid, cpid, bdid)
 
 					if r['MESSAGE'] == 'SUCCESS':
-						print 'Saving blobs to %s' % (save_path)
+						print 'Cydia blobs saved to %s' % (save_path)
 						write_to_file(save_path, r['REQUEST_STRING'])
 
-					else:
-						print 'Error receiving blobs: %s [%s]' % (r['MESSAGE'], r['STATUS'])
+					#else:
+						#print 'No blobs found for %s' % (b['build'])
 
 				else:
-					print 'Skipping build %s; blobs already exist at %s' % (b['build'], save_path)
+					print 'Blobs already exist at %s' % (save_path)
 
-	else:
-		print 'Skipped fetching blobs from Cydia server'
-				
-	if not args.skip_cydia_beta:
-		print 'Fetching beta blobs available on Cydia server'
+		#print 'Fetching beta blobs available on Cydia server'
 		h = beta_firmwares(args.device)
 		if not h:
 			print 'ERROR: No firmwares found! Invalid device.'
@@ -171,24 +166,24 @@ def main(passedArgs = None):
 			cpid = device['cpid']
 			bdid = device['bdid']
 			for c in device['firmwares']:
-				save_path = os.path.join(args.save_dir, '%s_%s_%s-%s.shsh' % (ecid, model, c['version'], c['build']))
+				save_path = os.path.join(args.save_dir, '%s-%s-%s-%s.shsh' % (ecid, model, c['version'], c['build']))
 
 				if not os.path.exists(save_path) or args.overwrite_cydia or args.overwrite:
-					print 'Requesting beta blobs from Cydia for %s/%s' % (model, c['build'])
+					#print 'Requesting beta blobs from Cydia for %s/%s' % (model, c['build'])
 					r = request_blobs_from_cydia(board, c['build'], ecid, cpid, bdid)
 
 					if r['MESSAGE'] == 'SUCCESS':
-						print 'Saving blobs to %s' % (save_path)
+						print 'Cydia blobs saved to %s' % (save_path)
 						write_to_file(save_path, r['REQUEST_STRING'])
 
-					else:
-						print 'Error receiving blobs: %s [%s]' % (r['MESSAGE'], r['STATUS'])
+					#else:
+						#print 'No blobs found for %s' % (c['build'])
 
 				else:
-					print 'Skipping build %s; blobs already exist at %s' % (c['build'], save_path)
+					print 'Blobs already exist at %s' % (save_path)
 
 	else:
-		print 'Skipped fetching beta blobs from Cydia server'
+		print 'Skipped fetching blobs from Cydia server'
 
 	return 0
 

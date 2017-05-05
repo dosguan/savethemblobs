@@ -23,8 +23,7 @@ def parse_args():
 	parser.add_argument('--overwrite-apple', help='overwrite any existing blobs (only from Apple)', action='store_true')
 	parser.add_argument('--overwrite-cydia', help='overwrite any existing blobs (only from Cydia)', action='store_true')
 	parser.add_argument('--no-submit-cydia', help='don\'t submit blobs to Cydia server', action='store_true')
-	parser.add_argument('--skip-cydia', help='skip fetching blobs from Cydia server', action='store_true')
-	parser.add_argument('--skip-cydia-beta', help='skip fetching beta blobs from Cydia server', action='store_true')
+	parser.add_argument('--cydia-blobs', help='fetch blobs from Cydia server (32 bit devices only)', action='store_true')
 	return parser.parse_args()
 
 def main():

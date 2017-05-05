@@ -8,19 +8,16 @@ Will automatically work with future firmwares!
 
 ## Dependencies
 
-	Depends on Python 2.7
-	
-	On OS X, use Homebrew to set up:
-		brew install python
-		pip install --upgrade pip setuptools requests
+	Depends on Python 2.7 pip, and requests. 
+	With pip installed, run:
+		pip install requests
 	
 
 ## Usage
 
 	savethemblobs.py [-h] [--save-dir SAVE_DIR] [--overwrite]
 	                 [--overwrite-apple] [--overwrite-cydia]
-	                 [--no-submit-cydia]
-	                 [--skip-cydia] [--skip-cydia-beta]
+	                 [--no-submit-cydia] [--cydia-blobs]
 	                 ecid device
 
 	positional arguments:
@@ -34,8 +31,7 @@ Will automatically work with future firmwares!
 	  --overwrite-apple    overwrite any existing blobs (only from Apple)
 	  --overwrite-cydia    overwrite any existing blobs (only from Cydia)
 	  --no-submit-cydia    don't submit blobs to Cydia server
-	  --skip-cydia         skip fetching blobs from Cydia server
-	  --skip-cydia-beta    skip fetching beta blobs from Cydia server
+	  --cydia-blobs        fetch blobs from Cydia server (32 bit devices only)
 
 
 ## License
