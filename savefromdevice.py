@@ -1,15 +1,19 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
+# -*- coding: utf-8 -*-
 # savefromdevice.py - save blobs etc from a device
 
+from __future__ import absolute_import
+from __future__ import print_function
 import sys, os, argparse
 import requests
 import json
 import savethemblobs
 from MobileDevice import *
+from six.moves import input
 
 def get_connected_devices(): 
-	print "Checking for connected devices..."
-	return list_devices().values()
+	print("Checking for connected devices...")
+	return list(list_devices().values())
 
 def get_user_friendly_name(identifier):
 	url = 'http://api.ios.icj.me/v2/%s/latest/name' % (identifier)
@@ -36,17 +40,17 @@ def main():
 		version = device.get_value(name=u'ProductVersion')
 		buildid = device.get_value(name=u'BuildVersion')
 
-		print ""
+		print("")
 
-		response = raw_input("Found %s on %s (%s).\nWould you like to save blobs for it? (y/n): " % (get_user_friendly_name(identifier), version, buildid))
+		response = input("Found %s on %s (%s).\nWould you like to save blobs for it? (y/n): " % (get_user_friendly_name(identifier), version, buildid))
 
 		if(response != "y"):
 			continue
 
 		ecid = device.get_value(name=u'UniqueChipID')
-		print "ECID: %s, Identifier: %s" % (ecid, identifier)
+		print("ECID: %s, Identifier: %s" % (ecid, identifier))
 
-		print ""
+		print("")
 
 		args = parse_args()
 		args.device = identifier
@@ -57,3 +61,4 @@ def main():
 
 if __name__ == '__main__':
 	main()
+
