@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # savethemblobs.py
 #   A simple script to grab all SHSH blobs from Apple that it's currently signing to save them locally and on Cydia server.
