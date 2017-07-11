@@ -8,9 +8,10 @@ Will automatically work with future firmwares!
 
 ## Dependencies
 
-	Depends on Python 2.7 pip, and requests. 
+	Depends on Python 2.7 pip, requests and six. 
 	With pip installed, run:
 		pip install requests
+		pip install six
 	
 
 ## Usage
