@@ -10,9 +10,7 @@ Will automatically work with future firmwares!
 
 	Depends on Python 2.7 pip, requests and six. 
 	With pip installed, run:
-		pip install requests
-		pip install six
-	
+		pip install -r requirements.txt
 
 ## Usage
 
