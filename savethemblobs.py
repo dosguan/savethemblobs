@@ -25,9 +25,10 @@ __version__ = '2.1'
 USER_AGENT = 'savethemblobs/%s' % __version__
 
 def firmwares_being_signed(device):
-    url = 'http://api.ineal.me/tss/%s/' % (device)
+    url = 'https://api.ipsw.me/v2.1/firmwares.json'
     r = requests.get(url, headers={'User-Agent': USER_AGENT})
-    return r.text
+    tmp1 = json.loads((r.text))
+    return tmp1['devices'][device]
 
 def firmwares(device):
     url = 'http://api.ineal.me/tss/%s/all' % (device)
@@ -117,17 +118,18 @@ def main(passedArgs = None):
     if not d:
         print('ERROR: No firmwares found! Invalid device.')
         return 1
-    for device in six.itervalues(json.loads(d)):
-        board = device['board']
-        model = device['model']
-        cpid = device['cpid']
-        bdid = device['bdid']
-        for f in device['firmwares']:
-            save_path = os.path.join(args.save_dir, '%s-%s-%s-%s.shsh' % (ecid, model, f['version'], f['build']))
+
+    board = d['BoardConfig']
+    model = (args.device)
+    cpid = d['cpid']
+    bdid = d['bdid']
+    for f in d['firmwares']:
+        if f['signed']:
+            save_path = os.path.join(args.save_dir, '%s-%s-%s-%s.shsh' % (ecid, model, f['version'], f['buildid']))
 
             if not os.path.exists(save_path) or args.overwrite_apple or args.overwrite:
-                print('Requesting blobs from Apple for %s/%s' % (model, f['build']))
-                r = request_blobs_from_apple(board, f['build'], ecid, cpid, bdid)
+                print('Requesting blobs from Apple for %s/%s' % (model, f['buildid']))
+                r = request_blobs_from_apple(board, f['buildid'], ecid, cpid, bdid)
 
                 if r['MESSAGE'] == 'SUCCESS':
                     print('Fresh blobs saved to %s' % (save_path))
@@ -142,6 +144,7 @@ def main(passedArgs = None):
 
             else:
                 print('Blobs already exist at %s' % (save_path))
+
 
     if args.cydia_blobs:
         print('Fetching blobs available on Cydia server')
