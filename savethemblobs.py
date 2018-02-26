@@ -140,15 +140,15 @@ def main(passedArgs = None):
 				save_path = os.path.join(args.save_dir, '%s-%s-%s-%s.shsh' % (ecid, model, b['version'], b['build']))
 
 				if not os.path.exists(save_path) or args.overwrite_cydia or args.overwrite:
-					#print 'Requesting blobs from Cydia for %s/%s' % (model, b['build'])
+					print('Requesting blobs from Cydia for %s/%s' % (model, b['build']))
 					r = request_blobs_from_cydia(board, b['build'], ecid, cpid, bdid)
 
 					if r['MESSAGE'] == 'SUCCESS':
 						print('Cydia blobs saved to %s' % (save_path))
 						write_to_file(save_path, r['REQUEST_STRING'])
 
-					#else:
-						#print 'No blobs found for %s' % (b['build'])
+					else:
+						print('Error receiving blobs: %s [%s]' % (r['MESSAGE'], r['STATUS']))
 
 				else:
 					print('Blobs already exist at %s' % (save_path))
@@ -167,15 +167,15 @@ def main(passedArgs = None):
 				save_path = os.path.join(args.save_dir, '%s-%s-%s-%s.shsh' % (ecid, model, c['version'], c['build']))
 
 				if not os.path.exists(save_path) or args.overwrite_cydia or args.overwrite:
-					#print 'Requesting beta blobs from Cydia for %s/%s' % (model, c['build'])
+					print('Requesting blobs from Cydia for %s/%s' % (model, c['build']))
 					r = request_blobs_from_cydia(board, c['build'], ecid, cpid, bdid)
 
 					if r['MESSAGE'] == 'SUCCESS':
 						print('Cydia blobs saved to %s' % (save_path))
 						write_to_file(save_path, r['REQUEST_STRING'])
 
-					#else:
-						#print 'No blobs found for %s' % (c['build'])
+					else:
+						print('Error receiving blobs: %s [%s]' % (r['MESSAGE'], r['STATUS']))
 
 				else:
 					print('Blobs already exist at %s' % (save_path))
