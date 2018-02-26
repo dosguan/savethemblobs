@@ -24,11 +24,6 @@ __version__ = '2.1'
 
 USER_AGENT = 'savethemblobs/%s' % __version__
 
-def firmwares_being_signed(device):
-	url = 'http://api.ineal.me/tss/%s/' % (device)
-	r = requests.get(url, headers={'User-Agent': USER_AGENT})
-	return r.text
-
 def firmwares(device):
 	url = 'http://api.ineal.me/tss/%s/all' % (device)
 	r = requests.get(url, headers={'User-Agent': USER_AGENT})
@@ -100,7 +95,7 @@ def main(passedArgs = None):
 		os.makedirs(args.save_dir)
 
 	print('Fetching firmwares Apple is currently signing for %s' % (args.device))
-	d = firmwares_being_signed(args.device)
+	d = firmwares(args.device)
 	if not d:
 		print('ERROR: No firmwares found! Invalid device.')
 		return 1
@@ -192,4 +187,3 @@ def main(passedArgs = None):
 
 if __name__ == '__main__':
 	sys.exit(main())
-
