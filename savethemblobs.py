@@ -46,7 +46,7 @@ def tss_request_manifest(board, build, ecid, cpid=None, bdid=None):
 
 def request_blobs_from_apple(board, build, ecid, cpid=None, bdid=None):
 	url = 'http://gs.apple.com/TSS/controller?action=2'
-	r = requests.post(url, headers={'User-Agent': USER_AGENT}, data=tss_request_manifest(board, build, ecid, cpid, bdid))
+	r = requests.post(url, headers={'User-Agent': 'InetURL/1.0', 'Accept-Encoding': '*/*', 'Content-type': 'text/xml; charset="utf-8"'}, data=tss_request_manifest(board, build, ecid, cpid, bdid))
 	if not r.status_code == requests.codes.ok:
 		return { 'MESSAGE': 'TSS HTTP STATUS:', 'STATUS': r.status_code }
 	return parse_tss_response(r.text)
